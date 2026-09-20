@@ -1,0 +1,930 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SIPO Sensor Aggregation Simulator | EC2201</title>
+  <meta name="description" content="College Project: SIPO Sensor Aggregation Simulator - EC2201 Synchronous Sequential Circuits Unit III. Interactive simulation of a Serial-In Parallel-Out Shift Register with live timing, logic schematic, and truth table." />
+
+  <!-- Google Fonts: Space Grotesk & JetBrains Mono -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700;800&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet" />
+
+  <!-- Stylesheet -->
+  <link rel="stylesheet" href="css/styles.css" />
+</head>
+<body class="circuit-bg">
+  <!-- Top Global Navigation -->
+  <header class="top-nav-bar" id="main-header">
+    <div class="nav-container">
+      <div class="nav-brand">
+        <div class="chip-icon">
+          <span class="chip-core"></span>
+        </div>
+        <div class="brand-text">
+          <span class="brand-title">SIPO SIMULATOR</span>
+          <span class="brand-course">EC2201 • UNIT III</span>
+        </div>
+      </div>
+
+      <nav class="nav-menu" id="nav-links-container">
+        <a href="#dashboard" class="nav-link active">Dashboard</a>
+        <a href="#definition" class="nav-link">Definition</a>
+        <a href="#flip-flops" class="nav-link">Flip-Flops</a>
+        <a href="#logic-diagram" class="nav-link">Logic Diagram</a>
+        <a href="#truth-table" class="nav-link">Truth Table</a>
+        <a href="#timing-diagram" class="nav-link">Timing Diagram</a>
+        <a href="#applications" class="nav-link">Applications</a>
+      </nav>
+
+      <div class="nav-actions">
+        <button id="btn-toggle-sound" class="btn-sound" title="Toggle Digital Sound Effects">
+          <span class="icon">🔊</span> Audio: ON
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <main class="page-content">
+    <!-- ======================================================= -->
+    <!-- SECTION 1: INTERACTIVE FRONT PAGE / DASHBOARD          -->
+    <!-- ======================================================= -->
+    <section id="dashboard" class="sim-section hero-dashboard">
+      <div class="container">
+        <!-- Academic Header Badge -->
+        <div class="academic-tag-container">
+          <div class="academic-badge">
+            <span class="badge-code">EC2201</span>
+            <span class="badge-divider">|</span>
+            <span class="badge-subject">Synchronous Sequential Circuits</span>
+            <span class="badge-divider">|</span>
+            <span class="badge-unit">Unit III</span>
+          </div>
+        </div>
+
+        <div class="hero-titles">
+          <h1 class="hero-main-title">SIPO Sensor Aggregation Simulator</h1>
+          <p class="hero-subtitle">Interactive simulation of a Serial-In Parallel-Out Shift Register</p>
+        </div>
+
+        <!-- Architectural Pipeline Preview -->
+        <div class="pipeline-preview-card">
+          <div class="pipeline-flow-diagram">
+            <div class="pipe-node pipe-in">
+              <span class="pipe-badge">1-WIRE SERIAL</span>
+              <span class="pipe-name">Serial Input</span>
+              <span class="pipe-sub">Chronological Bits</span>
+            </div>
+            <div class="pipe-arrow">
+              <span class="arrow-line"></span>
+              <span class="arrow-head">▶</span>
+            </div>
+            <div class="pipe-node pipe-core">
+              <span class="pipe-badge">4-STAGE CASCADE</span>
+              <span class="pipe-name">SIPO Shift Register</span>
+              <span class="pipe-sub">4 × D Flip-Flops (A, B, C, D)</span>
+            </div>
+            <div class="pipe-arrow">
+              <span class="arrow-line"></span>
+              <span class="arrow-head">▶</span>
+            </div>
+            <div class="pipe-node pipe-out">
+              <span class="pipe-badge">4-BIT BUS</span>
+              <span class="pipe-name">Parallel Output</span>
+              <span class="pipe-sub">[QA, QB, QC, QD] Simultaneous</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Live Digital Indicators Grid (4 Flip-Flop Outputs) -->
+        <div class="indicators-section">
+          <div class="section-label-bar">
+            <span class="bar-title">LIVE REGISTER OUTPUT INDICATORS</span>
+            <span class="bar-tag">LATCHED HARDWARE REGISTER STATES</span>
+          </div>
+          <div class="indicators-grid">
+            <div class="digital-indicator-pod" id="dash-qa">
+              <div class="pod-led"></div>
+              <div class="pod-header">
+                <span class="stage-tag">STAGE 1</span>
+                <span class="stage-id">QA</span>
+              </div>
+              <div class="pod-display">
+                <span class="indicator-val">0</span>
+              </div>
+              <div class="pod-footer">QA = DFF A Output</div>
+            </div>
+
+            <div class="digital-indicator-pod" id="dash-qb">
+              <div class="pod-led"></div>
+              <div class="pod-header">
+                <span class="stage-tag">STAGE 2</span>
+                <span class="stage-id">QB</span>
+              </div>
+              <div class="pod-display">
+                <span class="indicator-val">0</span>
+              </div>
+              <div class="pod-footer">QB = DFF B Output</div>
+            </div>
+
+            <div class="digital-indicator-pod" id="dash-qc">
+              <div class="pod-led"></div>
+              <div class="pod-header">
+                <span class="stage-tag">STAGE 3</span>
+                <span class="stage-id">QC</span>
+              </div>
+              <div class="pod-display">
+                <span class="indicator-val">0</span>
+              </div>
+              <div class="pod-footer">QC = DFF C Output</div>
+            </div>
+
+            <div class="digital-indicator-pod" id="dash-qd">
+              <div class="pod-led"></div>
+              <div class="pod-header">
+                <span class="stage-tag">STAGE 4</span>
+                <span class="stage-id">QD</span>
+              </div>
+              <div class="pod-display">
+                <span class="indicator-val">0</span>
+              </div>
+              <div class="pod-footer">QD = DFF D Output</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Live Status Console & Interactive Control Deck -->
+        <div class="dashboard-controls-wrapper">
+          <!-- Live Status Panel -->
+          <div class="live-status-card">
+            <div class="card-header-clean">
+              <span class="panel-icon">📊</span>
+              <span class="panel-heading">SYSTEM TELEMETRY STATUS</span>
+            </div>
+            <div class="status-metrics-row">
+              <div class="metric-item">
+                <span class="metric-lbl">Clock Cycle</span>
+                <span class="metric-val" id="dash-clock">0</span>
+              </div>
+              <div class="metric-divider"></div>
+              <div class="metric-item">
+                <span class="metric-lbl">Serial Input</span>
+                <span class="metric-val highlight-amber" id="dash-serial-in">0</span>
+              </div>
+              <div class="metric-divider"></div>
+              <div class="metric-item">
+                <span class="metric-lbl">Parallel Output</span>
+                <span class="metric-val highlight-cyan font-mono" id="dash-parallel-out">0000</span>
+              </div>
+              <div class="metric-divider"></div>
+              <div class="metric-item">
+                <span class="metric-lbl">Status</span>
+                <span class="status-tag ready" id="dash-status">READY</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Interactive Control Console -->
+          <div class="interactive-control-card">
+            <div class="card-header-clean">
+              <span class="panel-icon">🎮</span>
+              <span class="panel-heading">SIMULATOR CONTROLLER</span>
+            </div>
+            
+            <div class="controls-toolbar">
+              <div class="btn-group-primary">
+                <button id="btn-toggle-sim" class="ctrl-btn btn-primary" title="Toggle continuous clock oscillation">
+                  <span class="icon">▶</span> Start Simulation
+                </button>
+                <button id="btn-next-clock" class="ctrl-btn btn-accent" title="Pulse single rising clock edge">
+                  <span class="icon">⏭</span> Next Clock
+                </button>
+                <button id="btn-prev-clock" class="ctrl-btn btn-secondary" title="Step back one clock cycle">
+                  <span class="icon">⏮</span> Previous Clock
+                </button>
+                <button id="btn-reset" class="ctrl-btn btn-danger" title="Clear all flip-flops to 0000 and clock to 0">
+                  <span class="icon">↺</span> Reset
+                </button>
+              </div>
+
+              <!-- Stream Selector & Speed Tuning -->
+              <div class="stream-tuning-row">
+                <div class="tuning-col">
+                  <label for="sample-stream-select" class="tuning-label">Input Bit Stream:</label>
+                  <select id="sample-stream-select" class="modern-select">
+                    <option value="1011" selected>1011 (Standard Sample)</option>
+                    <option value="0000">0000 (All Zeros)</option>
+                    <option value="0101">0101 (Alternating 0-1)</option>
+                    <option value="1010">1010 (Alternating 1-0)</option>
+                    <option value="1111">1111 (All High)</option>
+                    <option value="custom">Custom Binary Stream...</option>
+                  </select>
+                </div>
+
+                <div class="tuning-col custom-input-col">
+                  <label for="custom-stream-input" class="tuning-label">Custom Bits (4-8 bits):</label>
+                  <div class="custom-input-group">
+                    <input type="text" id="custom-stream-input" class="modern-input" maxlength="8" placeholder="e.g. 1101" value="1011" />
+                    <button id="btn-apply-custom" class="btn-mini-apply">Apply</button>
+                  </div>
+                </div>
+
+                <div class="tuning-col speed-col">
+                  <label for="sim-speed-slider" class="tuning-label">
+                    Clock Oscillator: <span id="sim-speed-label">0.8 Hz (1200ms)</span>
+                  </label>
+                  <input type="range" id="sim-speed-slider" min="400" max="2500" step="100" value="1200" class="modern-range" />
+                </div>
+              </div>
+
+              <!-- Interactive Clickable Bit Strip -->
+              <div class="interactive-bit-strip-card">
+                <div class="bit-strip-header">
+                  <span class="bit-strip-title">INTERACTIVE SERIAL BIT TAPE (CLICK ANY BIT TO TOGGLE 0 ↔ 1):</span>
+                  <span class="bit-strip-hint" id="active-bit-indicator-hint">Active bit: 1</span>
+                </div>
+                <div class="bit-pads-row" id="dashboard-bit-pads">
+                  <!-- Dynamically rendered clickable bit pads -->
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ======================================================= -->
+    <!-- SECTION 2: DEFINITION                                  -->
+    <!-- ======================================================= -->
+    <section id="definition" class="sim-section">
+      <div class="container">
+        <div class="section-title-box">
+          <span class="section-num">02. CONCEPTUAL FOUNDATION</span>
+          <h2 class="section-heading">What is a SIPO Shift Register?</h2>
+          <p class="section-lead">
+            “A Serial-In Parallel-Out (SIPO) shift register is a sequential digital circuit that receives data one bit at a time through a serial input and makes the stored data available simultaneously at multiple parallel outputs.”
+          </p>
+        </div>
+
+        <!-- 4 Small Interactive Terminology Cards -->
+        <div class="term-cards-grid">
+          <div class="term-card active-term" data-term="serial">
+            <div class="term-card-header">
+              <span class="term-icon">📥</span>
+              <h3 class="term-title">Serial Input</h3>
+            </div>
+            <p class="term-desc">
+              A single digital signal line where binary data bits (0 or 1) arrive chronologically, exactly one bit per clock cycle, saving physical wiring pins.
+            </p>
+            <div class="term-footer">Click to focus concept</div>
+          </div>
+
+          <div class="term-card" data-term="clock">
+            <div class="term-card-header">
+              <span class="term-icon">⏱️</span>
+              <h3 class="term-title">Clock</h3>
+            </div>
+            <p class="term-desc">
+              The common periodic synchronizing pulse. Active transitions (rising edges ↑) trigger simultaneous latching and bit shifting across every stage.
+            </p>
+            <div class="term-footer">Click to focus concept</div>
+          </div>
+
+          <div class="term-card" data-term="shift">
+            <div class="term-card-header">
+              <span class="term-icon">⛓️</span>
+              <h3 class="term-title">Shift Register</h3>
+            </div>
+            <p class="term-desc">
+              A cascade of memory elements (D flip-flops) wired such that the output of each stage feeds directly into the data input of the subsequent stage.
+            </p>
+            <div class="term-footer">Click to focus concept</div>
+          </div>
+
+          <div class="term-card" data-term="parallel">
+            <div class="term-card-header">
+              <span class="term-icon">📤</span>
+              <h3 class="term-title">Parallel Output</h3>
+            </div>
+            <p class="term-desc">
+              Dedicated output lines tapped from each flip-flop Q pin, allowing the reconstructed multi-bit data word to be read instantaneously in a single cycle.
+            </p>
+            <div class="term-footer">Click to focus concept</div>
+          </div>
+        </div>
+
+        <!-- Basic Process Flow Diagram -->
+        <div class="process-flow-container">
+          <div class="process-flow-heading">
+            <span>CORE SEQUENTIAL PROCESS CYCLE</span>
+          </div>
+          <div class="process-steps-row">
+            <div class="process-step">
+              <div class="step-badge">1</div>
+              <div class="step-text">Serial Data</div>
+              <div class="step-sub">Bit arrives at DA</div>
+            </div>
+            <div class="process-arrow">↓</div>
+            <div class="process-step">
+              <div class="step-badge">2</div>
+              <div class="step-text">Shift</div>
+              <div class="step-sub">Bits advance on CLK ↑</div>
+            </div>
+            <div class="process-arrow">↓</div>
+            <div class="process-step">
+              <div class="step-badge">3</div>
+              <div class="step-text">Store</div>
+              <div class="step-sub">Latched in internal cells</div>
+            </div>
+            <div class="process-arrow">↓</div>
+            <div class="process-step">
+              <div class="step-badge">4</div>
+              <div class="step-text">Parallel Output</div>
+              <div class="step-sub">Simultaneous [QA QB QC QD]</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- "Learn More" Collapsible Drawer -->
+        <div class="learn-more-box">
+          <button id="btn-learn-more" class="btn-learn-more">
+            <span class="icon">▼</span> Learn More: Clock Pulse Propagation
+          </button>
+
+          <div id="learn-more-drawer" class="learn-more-drawer">
+            <div class="drawer-content">
+              <h4>How Data Moves During Each Clock Pulse:</h4>
+              <ol class="drawer-steps">
+                <li>
+                  <strong>Setup Phase ($t_{su}$):</strong> Before the active clock edge arrives, the incoming serial bit stabilizes at the $D$ input of DFF A, and the previous $Q$ outputs of stages A, B, and C stabilize at the inputs of B, C, and D respectively.
+                </li>
+                <li>
+                  <strong>Active Rising Edge ($\uparrow$):</strong> At the instant the clock voltage transitions from logic Low ($0$) to logic High ($1$), the internal transmission gates of every D flip-flop trigger simultaneously.
+                </li>
+                <li>
+                  <strong>Simultaneous Transfer:</strong> Because all flip-flops share the identical clock line, they latch their respective inputs simultaneously. DFF B captures the value that DFF A had <em>immediately prior</em> to the clock edge, completely avoiding race conditions due to propagation delay ($t_{pd}$).
+                </li>
+                <li>
+                  <strong>Parallel Availability:</strong> Following flip-flop propagation delay ($t_{pd}$), the outputs $Q_A, Q_B, Q_C, Q_D$ present the freshly shifted 4-bit parallel word to the downstream digital bus.
+                </li>
+              </ol>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ======================================================= -->
+    <!-- SECTION 3: FLIP-FLOPS USED                             -->
+    <!-- ======================================================= -->
+    <section id="flip-flops" class="sim-section">
+      <div class="container">
+        <div class="section-title-box">
+          <span class="section-num">03. SEQUENTIAL STORAGE ELEMENTS</span>
+          <h2 class="section-heading">Flip-Flops Used in SIPO</h2>
+          <div class="component-highlight">
+            <span class="comp-badge">PRIMARY STORAGE COMPONENT</span>
+            <span class="comp-name">D Flip-Flop (Data / Delay Latch)</span>
+          </div>
+          <p class="section-lead">
+            “A D (Data) flip-flop stores one bit of information and transfers the value at its D input to its Q output on the active clock edge.”
+          </p>
+        </div>
+
+        <!-- Mathematical Relationship Equations Callout -->
+        <div class="equations-card">
+          <div class="eq-header">
+            <span class="eq-icon">📐</span>
+            <span class="eq-title">STAGE TRANSFER RELATIONSHIPS</span>
+          </div>
+          <div class="eq-grid">
+            <div class="eq-item">
+              <span class="eq-formula">QA(next) = Serial Input</span>
+              <span class="eq-caption">DFF A receives external serial bit</span>
+            </div>
+            <div class="eq-item">
+              <span class="eq-formula">QB(next) = QA(previous)</span>
+              <span class="eq-caption">DFF B receives previous QA</span>
+            </div>
+            <div class="eq-item">
+              <span class="eq-formula">QC(next) = QB(previous)</span>
+              <span class="eq-caption">DFF C receives previous QB</span>
+            </div>
+            <div class="eq-item">
+              <span class="eq-formula">QD(next) = QC(previous)</span>
+              <span class="eq-caption">DFF D receives previous QC</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- 4 Interactive D Flip-Flop Cards -->
+        <div class="dff-interactive-grid">
+          <!-- DFF A -->
+          <div class="dff-card-interactive" id="card-dff-a" data-dff="A">
+            <div class="dff-top-bar">
+              <span class="dff-tag">STAGE 1</span>
+              <span class="dff-name">DFF A</span>
+            </div>
+            <div class="dff-core-body">
+              <div class="dff-pin-row">
+                <span class="pin-name">D Input:</span>
+                <span class="pin-value font-mono" id="dff-sec-d-a">0</span>
+              </div>
+              <div class="dff-pin-row">
+                <span class="pin-name">Q Output:</span>
+                <span class="pin-value font-mono highlight-cyan" id="dff-sec-q-a">0</span>
+              </div>
+              <div class="dff-pin-row">
+                <span class="pin-name">Clocking:</span>
+                <span class="pin-value">Rising Edge (↑)</span>
+              </div>
+              <div class="dff-role-desc">
+                <strong>Role:</strong> Receives serial input directly from line.
+              </div>
+            </div>
+            <div class="dff-click-cta">Click for full stage inspector 🔍</div>
+          </div>
+
+          <!-- DFF B -->
+          <div class="dff-card-interactive" id="card-dff-b" data-dff="B">
+            <div class="dff-top-bar">
+              <span class="dff-tag">STAGE 2</span>
+              <span class="dff-name">DFF B</span>
+            </div>
+            <div class="dff-core-body">
+              <div class="dff-pin-row">
+                <span class="pin-name">D Input:</span>
+                <span class="pin-value font-mono" id="dff-sec-d-b">0</span>
+              </div>
+              <div class="dff-pin-row">
+                <span class="pin-name">Q Output:</span>
+                <span class="pin-value font-mono highlight-cyan" id="dff-sec-q-b">0</span>
+              </div>
+              <div class="dff-pin-row">
+                <span class="pin-name">Clocking:</span>
+                <span class="pin-value">Rising Edge (↑)</span>
+              </div>
+              <div class="dff-role-desc">
+                <strong>Role:</strong> Receives previous QA from DFF A.
+              </div>
+            </div>
+            <div class="dff-click-cta">Click for full stage inspector 🔍</div>
+          </div>
+
+          <!-- DFF C -->
+          <div class="dff-card-interactive" id="card-dff-c" data-dff="C">
+            <div class="dff-top-bar">
+              <span class="dff-tag">STAGE 3</span>
+              <span class="dff-name">DFF C</span>
+            </div>
+            <div class="dff-core-body">
+              <div class="dff-pin-row">
+                <span class="pin-name">D Input:</span>
+                <span class="pin-value font-mono" id="dff-sec-d-c">0</span>
+              </div>
+              <div class="dff-pin-row">
+                <span class="pin-name">Q Output:</span>
+                <span class="pin-value font-mono highlight-cyan" id="dff-sec-q-c">0</span>
+              </div>
+              <div class="dff-pin-row">
+                <span class="pin-name">Clocking:</span>
+                <span class="pin-value">Rising Edge (↑)</span>
+              </div>
+              <div class="dff-role-desc">
+                <strong>Role:</strong> Receives previous QB from DFF B.
+              </div>
+            </div>
+            <div class="dff-click-cta">Click for full stage inspector 🔍</div>
+          </div>
+
+          <!-- DFF D -->
+          <div class="dff-card-interactive" id="card-dff-d" data-dff="D">
+            <div class="dff-top-bar">
+              <span class="dff-tag">STAGE 4</span>
+              <span class="dff-name">DFF D</span>
+            </div>
+            <div class="dff-core-body">
+              <div class="dff-pin-row">
+                <span class="pin-name">D Input:</span>
+                <span class="pin-value font-mono" id="dff-sec-d-d">0</span>
+              </div>
+              <div class="dff-pin-row">
+                <span class="pin-name">Q Output:</span>
+                <span class="pin-value font-mono highlight-cyan" id="dff-sec-q-d">0</span>
+              </div>
+              <div class="dff-pin-row">
+                <span class="pin-name">Clocking:</span>
+                <span class="pin-value">Rising Edge (↑)</span>
+              </div>
+              <div class="dff-role-desc">
+                <strong>Role:</strong> Receives previous QC from DFF C.
+              </div>
+            </div>
+            <div class="dff-click-cta">Click for full stage inspector 🔍</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ======================================================= -->
+    <!-- SECTION 4: LOGIC DIAGRAM                               -->
+    <!-- ======================================================= -->
+    <section id="logic-diagram" class="sim-section">
+      <div class="container">
+        <div class="section-title-box">
+          <span class="section-num">04. HARDWARE SCHEMATIC</span>
+          <h2 class="section-heading">SIPO Logic Diagram</h2>
+          <p class="section-lead">
+            Large interactive SVG circuit diagram showing synchronous cascading of four D flip-flops driven by a shared clock bus. Real-time wire illumination and data packet animation reflect register shift dynamics.
+          </p>
+        </div>
+
+        <!-- Logic Diagram SVG Mount -->
+        <div id="circuit-diagram-mount" class="diagram-viewport-card"></div>
+
+        <div class="diagram-legend-bar">
+          <div class="legend-item">
+            <span class="legend-color legend-high"></span>
+            <span>Logic 1 (High / Active Voltage)</span>
+          </div>
+          <div class="legend-item">
+            <span class="legend-color legend-low"></span>
+            <span>Logic 0 (Low / Ground Reference)</span>
+          </div>
+          <div class="legend-item">
+            <span class="legend-color legend-clk"></span>
+            <span>Common Clock Rail (Trigger Pulse)</span>
+          </div>
+          <div class="legend-item">
+            <span class="legend-color legend-bus"></span>
+            <span>Parallel 4-bit Output Bus</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ======================================================= -->
+    <!-- SECTION 5: TRUTH / STATE TABLE                         -->
+    <!-- ======================================================= -->
+    <section id="truth-table" class="sim-section">
+      <div class="container">
+        <div class="section-title-box">
+          <span class="section-num">05. STATE VERIFICATION</span>
+          <h2 class="section-heading">SIPO State / Truth Table</h2>
+          <p class="section-lead">
+            Dynamically computed transition table reflecting the exact bit-shifting orientation of the active stream. Click on any row to time-travel the simulator to that exact clock cycle.
+          </p>
+        </div>
+
+        <div class="table-card">
+          <!-- Table Controls Header -->
+          <div class="table-toolbar">
+            <div class="table-info">
+              <span class="table-tag">DYNAMIC STATE TRAJECTORY</span>
+              <span class="table-sub">Highlighted row denotes current simulator state</span>
+            </div>
+            <div class="table-actions">
+              <button id="table-btn-prev" class="btn-table-action" title="Step Back">⏮ Prev Clock</button>
+              <button id="table-btn-next" class="btn-table-action btn-table-primary" title="Step Next">Next Clock ⏭</button>
+              <button id="table-btn-reset" class="btn-table-action" title="Reset">↺ Reset</button>
+            </div>
+          </div>
+
+          <!-- The Table -->
+          <div class="table-responsive-container">
+            <table class="sipo-state-table">
+              <thead>
+                <tr>
+                  <th class="th-clock">Clock</th>
+                  <th class="th-serial">Serial Input</th>
+                  <th class="th-qa">QA</th>
+                  <th class="th-qb">QB</th>
+                  <th class="th-qc">QC</th>
+                  <th class="th-qd">QD</th>
+                  <th class="th-parallel">Parallel Output</th>
+                </tr>
+              </thead>
+              <tbody id="truth-table-body">
+                <!-- Dynamically generated rows -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ======================================================= -->
+    <!-- SECTION 6: TIMING DIAGRAM                              -->
+    <!-- ======================================================= -->
+    <section id="timing-diagram" class="sim-section">
+      <div class="container">
+        <div class="section-title-box">
+          <span class="section-num">06. CHRONOLOGICAL OSCILLOGRAM</span>
+          <h2 class="section-heading">SIPO Timing Diagram</h2>
+          <p class="section-lead">
+            High-precision digital timing waveforms demonstrating signal propagation delays and edge-triggered bit transitions across all stages from $T_0$ through $T_N$.
+          </p>
+        </div>
+
+        <!-- Timing Diagram SVG Mount -->
+        <div id="timing-diagram-mount" class="diagram-viewport-card"></div>
+      </div>
+    </section>
+
+    <!-- ======================================================= -->
+    <!-- SECTION 7: APPLICATIONS                                -->
+    <!-- ======================================================= -->
+    <section id="applications" class="sim-section">
+      <div class="container">
+        <div class="section-title-box">
+          <span class="section-num">07. ENGINEERING APPLICATION DOMAINS</span>
+          <h2 class="section-heading">Real-World Applications of SIPO</h2>
+          <p class="section-lead">
+            Explore how Serial-In Parallel-Out shift registers solve real-world industrial and embedded design challenges, saving copper wiring, expanding MCU capabilities, and synchronizing distributed telemetry.
+          </p>
+        </div>
+
+        <!-- Interactive Sensor Aggregation Flow Pipeline -->
+        <div class="main-app-pipeline-card">
+          <div class="pipeline-header">
+            <div class="pipeline-title-group">
+              <span class="badge-featured">FLAGSHIP CASE STUDY</span>
+              <h3 class="pipeline-main-title">Multi-Channel Sensor Data Aggregation Pipeline</h3>
+            </div>
+            
+            <div class="pipeline-demo-ctrls">
+              <select id="demo-sensor-select" class="demo-select">
+                <option value="temp">Temperature Sensor (27°C → 1011)</option>
+                <option value="pressure">Pressure Sensor (102 kPa → 0110)</option>
+                <option value="humidity">Humidity Sensor (68% → 1101)</option>
+                <option value="light">Ambient Light (450 Lux → 1111)</option>
+              </select>
+              <button id="btn-run-demo" class="btn-run-demo">
+                ▶ Run Application Demo
+              </button>
+            </div>
+          </div>
+
+          <!-- Sequential Flow Nodes -->
+          <div class="demo-flow-diagram">
+            <div class="demo-flow-node" data-node="1">
+              <div class="node-icon">🌡️</div>
+              <div class="node-name">Sensors</div>
+              <div class="node-desc">Analog/Raw Signal</div>
+            </div>
+            <div class="demo-flow-arrow">↓</div>
+            <div class="demo-flow-node" data-node="2">
+              <div class="node-icon">🔢</div>
+              <div class="node-name">Digital Data</div>
+              <div class="node-desc">ADC Quantized</div>
+            </div>
+            <div class="demo-flow-arrow">↓</div>
+            <div class="demo-flow-node" data-node="3">
+              <div class="node-icon">〰️</div>
+              <div class="node-name">Serial Bit Stream</div>
+              <div class="node-desc">1-Wire Transmission</div>
+            </div>
+            <div class="demo-flow-arrow">↓</div>
+            <div class="demo-flow-node" data-node="4">
+              <div class="node-icon">⚙️</div>
+              <div class="node-name">SIPO Shift Register</div>
+              <div class="node-desc">Synchronous Latching</div>
+            </div>
+            <div class="demo-flow-arrow">↓</div>
+            <div class="demo-flow-node" data-node="5">
+              <div class="node-icon">🔀</div>
+              <div class="node-name">Parallel Sensor Word</div>
+              <div class="node-desc">4-bit Bus Rebuilt</div>
+            </div>
+            <div class="demo-flow-arrow">↓</div>
+            <div class="demo-flow-node" data-node="6">
+              <div class="node-icon">💻</div>
+              <div class="node-name">Data Processing</div>
+              <div class="node-desc">Microcontroller / DSP</div>
+            </div>
+            <div class="demo-flow-arrow">↓</div>
+            <div class="demo-flow-node" data-node="7">
+              <div class="node-icon">📊</div>
+              <div class="node-name">Monitoring System</div>
+              <div class="node-desc">Real-time Telemetry</div>
+            </div>
+          </div>
+
+          <!-- Demo Animation Stage Readouts -->
+          <div class="demo-visual-stage">
+            <div class="demo-feed-box">
+              <span class="feed-label">Serial Line Carrier:</span>
+              <span class="feed-bubble" id="demo-bit-bubble">Standby...</span>
+            </div>
+            <div class="demo-feed-box">
+              <span class="feed-label">Reconstructed SIPO Word:</span>
+              <span class="feed-word font-mono" id="demo-parallel-val">0000</span>
+            </div>
+            <div class="demo-feed-box gauge-feed-box">
+              <span class="feed-label">Instrument Gauge:</span>
+              <div class="mini-gauge">
+                <div class="gauge-meter">
+                  <div class="gauge-needle" id="demo-gauge-needle"></div>
+                </div>
+                <span class="gauge-val" id="demo-gauge-val">--</span>
+              </div>
+            </div>
+          </div>
+          <div class="demo-status-banner" id="demo-status-msg">
+            Select a sensor preset above and click <strong>“Run Application Demo”</strong> to trace live data serialization, transmission, and SIPO parallel reconstruction.
+          </div>
+        </div>
+
+        <!-- 8 Interactive Application Cards -->
+        <div class="app-cards-grid">
+          <!-- Card 1 -->
+          <div class="app-card" data-app-id="1">
+            <div class="app-card-icon">📡</div>
+            <h4 class="app-card-title">1. Sensor Data Aggregation</h4>
+            <p class="app-card-summary">
+              Aggregating multi-channel sensor arrays over single-pair industrial harnesses into high-speed parallel buses.
+            </p>
+            <div class="app-card-cta">Inspect Use Case →</div>
+          </div>
+
+          <!-- Card 2 -->
+          <div class="app-card" data-app-id="2">
+            <div class="app-card-icon">🌐</div>
+            <h4 class="app-card-title">2. IoT Devices</h4>
+            <p class="app-card-summary">
+              Connecting compact edge sensors to resource-constrained microcontrollers with minimal pin overhead.
+            </p>
+            <div class="app-card-cta">Inspect Use Case →</div>
+          </div>
+
+          <!-- Card 3 -->
+          <div class="app-card" data-app-id="3">
+            <div class="app-card-icon">🎛️</div>
+            <h4 class="app-card-title">3. Embedded Systems</h4>
+            <p class="app-card-summary">
+              Core deserializer building block for hardware UART, SPI peripherals, and coprocessor interfaces.
+            </p>
+            <div class="app-card-cta">Inspect Use Case →</div>
+          </div>
+
+          <!-- Card 4 -->
+          <div class="app-card" data-app-id="4">
+            <div class="app-card-icon">📈</div>
+            <h4 class="app-card-title">4. Data Acquisition Systems</h4>
+            <p class="app-card-summary">
+              High-throughput multi-channel telemetry reassembly for DAQ equipment, FPGAs, and test fixtures.
+            </p>
+            <div class="app-card-cta">Inspect Use Case →</div>
+          </div>
+
+          <!-- Card 5 -->
+          <div class="app-card" data-app-id="5">
+            <div class="app-card-icon">🏭</div>
+            <h4 class="app-card-title">5. Industrial Monitoring</h4>
+            <p class="app-card-summary">
+              Interfacing noise-immune optical and RS-485 serial field signals directly into PLC parallel register banks.
+            </p>
+            <div class="app-card-cta">Inspect Use Case →</div>
+          </div>
+
+          <!-- Card 6 -->
+          <div class="app-card" data-app-id="6">
+            <div class="app-card-icon">📶</div>
+            <h4 class="app-card-title">6. Communication Systems</h4>
+            <p class="app-card-summary">
+              Demultiplexing high-frequency microwave and fiber-optic serial data streams into byte/word frames.
+            </p>
+            <div class="app-card-cta">Inspect Use Case →</div>
+          </div>
+
+          <!-- Card 7 -->
+          <div class="app-card" data-app-id="7">
+            <div class="app-card-icon">🔌</div>
+            <h4 class="app-card-title">7. Microcontroller Input Expansion</h4>
+            <p class="app-card-summary">
+              Reading dozens of input switches, keypads, and buttons using only two microcontroller I/O pins.
+            </p>
+            <div class="app-card-cta">Inspect Use Case →</div>
+          </div>
+
+          <!-- Card 8 -->
+          <div class="app-card" data-app-id="8">
+            <div class="app-card-icon">📏</div>
+            <h4 class="app-card-title">8. Digital Measurement Systems</h4>
+            <p class="app-card-summary">
+              Reconstructing serial quadrature linear encoders and digital caliper data into parallel driver displays.
+            </p>
+            <div class="app-card-cta">Inspect Use Case →</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Floating Quick Control Dock (Persistent Across All Sections) -->
+    <aside class="floating-quick-dock" id="floating-quick-dock" aria-label="Quick Simulator Controls">
+      <div class="dock-telemetry">
+        <span class="dock-tag">SIPO CORE</span>
+        <div class="dock-chip">CLK: <strong id="dock-clk">0</strong></div>
+        <div class="dock-chip">IN: <strong id="dock-in" class="highlight-amber">0</strong></div>
+        <div class="dock-chip">OUT: <strong id="dock-out" class="highlight-cyan font-mono">0000</strong></div>
+      </div>
+      <div class="dock-actions">
+        <button id="dock-btn-prev" class="btn-dock" title="Step Back 1 Clock">⏮ Prev</button>
+        <button id="dock-btn-next" class="btn-dock btn-dock-primary" title="Pulse Clock Edge (↑)">Next Clock ⏭</button>
+        <button id="dock-btn-auto" class="btn-dock btn-dock-accent" title="Toggle Auto Simulation">▶ Auto</button>
+        <button id="dock-btn-reset" class="btn-dock btn-dock-danger" title="Reset Circuit">↺</button>
+      </div>
+    </aside>
+  </main>
+
+  <!-- ======================================================= -->
+  <!-- MODAL: FLIP-FLOP STAGE DETAIL INSPECTOR                 -->
+  <!-- ======================================================= -->
+  <div id="dff-modal" class="modal-overlay">
+    <div class="modal-dialog">
+      <div class="modal-header">
+        <div class="modal-title-wrap">
+          <span class="modal-badge">HARDWARE STAGE INSPECTOR</span>
+          <h3 class="modal-title" id="modal-dff-title">D Flip-Flop Stage</h3>
+        </div>
+        <button id="dff-modal-close" class="modal-close-btn">&times;</button>
+      </div>
+      <div class="modal-body">
+        <div class="inspector-section">
+          <span class="insp-label">Stage Functional Role:</span>
+          <p id="modal-dff-role" class="insp-desc"></p>
+        </div>
+
+        <div class="inspector-section">
+          <span class="insp-label">Characteristic State Equation:</span>
+          <div class="insp-code-box" id="modal-dff-eq"></div>
+        </div>
+
+        <div class="inspector-grid">
+          <div class="insp-card">
+            <span class="insp-card-label">Current D Input:</span>
+            <span class="insp-card-val font-mono" id="modal-dff-d">0</span>
+          </div>
+          <div class="insp-card">
+            <span class="insp-card-label">Current Q Output:</span>
+            <span class="insp-card-val font-mono highlight-cyan" id="modal-dff-q">0</span>
+          </div>
+          <div class="insp-card">
+            <span class="insp-card-label">Clock Trigger:</span>
+            <span class="insp-card-val" id="modal-dff-clk">Rising Edge (↑)</span>
+          </div>
+          <div class="insp-card">
+            <span class="insp-card-label">Internal Stored Bit:</span>
+            <span class="insp-card-val font-mono highlight-amber" id="modal-dff-stored">0</span>
+          </div>
+        </div>
+
+        <div class="inspector-section">
+          <span class="insp-label">Next Clock Transition Behavior:</span>
+          <p id="modal-dff-next" class="insp-desc"></p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ======================================================= -->
+  <!-- MODAL: APPLICATION USE CASE DETAIL                      -->
+  <!-- ======================================================= -->
+  <div id="app-modal" class="modal-overlay">
+    <div class="modal-dialog">
+      <div class="modal-header">
+        <div class="modal-title-wrap">
+          <span class="modal-badge" id="modal-app-badge">Application Domain</span>
+          <h3 class="modal-title" id="modal-app-title">Application Name</h3>
+        </div>
+        <button id="app-modal-close" class="modal-close-btn">&times;</button>
+      </div>
+      <div class="modal-body">
+        <div class="inspector-section">
+          <span class="insp-label">How SIPO is Utilized:</span>
+          <p id="modal-app-how" class="insp-desc"></p>
+        </div>
+
+        <div class="inspector-section">
+          <span class="insp-label">Real-World Engineering Scenario:</span>
+          <div class="scenario-box">
+            <p id="modal-app-scenario" class="scenario-text"></p>
+          </div>
+        </div>
+
+        <div class="inspector-section">
+          <span class="insp-label">Why Serial-to-Parallel Conversion is Essential:</span>
+          <p id="modal-app-why" class="insp-desc highlight-text"></p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Scripts: Engine -> Visualizers -> Controller -->
+  <script src="js/sipo-engine.js"></script>
+  <script src="js/circuit-svg.js"></script>
+  <script src="js/timing-svg.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>
